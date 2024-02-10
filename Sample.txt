@@ -1,0 +1,1205 @@
+1.A) Single linkedlist
+----------------------
+
+#include <stdio.h>
+#include <stdlib.h>
+
+// Define a structure for a node
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+// Function to insert a node at the end of the linked list
+void insert(struct Node** head_ref, int new_data) {
+    // Allocate memory for new node
+    struct Node* new_node = (struct Node*)malloc(sizeof(struct Node));
+    // Set data for the new node
+    new_node->data = new_data;
+    new_node->next = NULL;
+    // If the linked list is empty, set the new node as the head
+    if (*head_ref == NULL) {
+        *head_ref = new_node;
+        return;
+    }
+    // Traverse to the last node
+    struct Node* last = *head_ref;
+    while (last->next != NULL)
+        last = last->next;
+    // Insert the new node at the end
+    last->next = new_node;
+}
+
+// Function to find the middle of the linked list
+void findMiddle(struct Node* head) {
+    struct Node *slow_ptr = head, *fast_ptr = head;
+    if (head != NULL) {
+        while (fast_ptr != NULL && fast_ptr->next != NULL) {
+            fast_ptr = fast_ptr->next->next;
+            slow_ptr = slow_ptr->next;
+        }
+        printf("The middle element is %d\n", slow_ptr->data);
+    }
+}
+
+// Function to print the linked list
+void printList(struct Node* node) {
+    while (node != NULL) {
+        printf("%d ", node->data);
+        node = node->next;
+    }
+    printf("\n");
+}
+
+int main() {
+    struct Node* head = NULL;
+    int n, data;
+    
+    printf("Enter the number of nodes: ");
+    scanf("%d", &n);
+    
+    printf("Enter the data for each node:\n");
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &data);
+        insert(&head, data);
+    }
+    
+    printf("Linked List: ");
+    printList(head);
+    
+    findMiddle(head);
+    
+    return 0;
+}
+
+
+1.B) Fibonacci series
+---------------------
+
+#include <stdio.h>
+void fibonacci(int n) {
+    int first = 0, second = 1, next;
+    printf("Fibonacci Series up to %d terms:\n", n);
+    int i;
+    for (i = 0; i < n; i++) {
+        if (i <= 1)
+            next = i;
+        else {
+            next = first + second;
+            first = second;
+            second = next;
+        }
+        printf("%d ", next);
+    }
+    printf("\n");
+}
+main() {
+    int num_terms;  
+    printf("Enter the number of terms for Fibonacci series: ");
+    scanf("%d", &num_terms);
+    fibonacci(num_terms);
+}
+
+
+2.A)  linked list of N nodes. rreverse the list.
+-----------------------------------------------
+
+#include <stdio.h>
+#include <stdlib.h>
+
+// Define a structure for a node
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+// Function to insert a node at the end of the linked list
+void insert(struct Node** head_ref, int new_data) {
+    // Allocate memory for new node
+    struct Node* new_node = (struct Node*)malloc(sizeof(struct Node));
+    // Set data for the new node
+    new_node->data = new_data;
+    new_node->next = NULL;
+    // If the linked list is empty, set the new node as the head
+    if (*head_ref == NULL) {
+        *head_ref = new_node;
+        return;
+    }
+    // Traverse to the last node
+    struct Node* last = *head_ref;
+    while (last->next != NULL)
+        last = last->next;
+    // Insert the new node at the end
+    last->next = new_node;
+}
+
+// Function to reverse the linked list
+void reverse(struct Node** head_ref) {
+    struct Node *prev = NULL, *current = *head_ref, *next = NULL;
+    while (current != NULL) {
+        next = current->next;
+        current->next = prev;
+        prev = current;
+        current = next;
+    }
+    *head_ref = prev;
+}
+
+// Function to print the linked list
+void printList(struct Node* node) {
+    while (node != NULL) {
+        printf("%d ", node->data);
+        node = node->next;
+    }
+    printf("\n");
+}
+
+int main() {
+    struct Node* head = NULL;
+    int n, data;
+    
+    printf("Enter the number of nodes: ");
+    scanf("%d", &n);
+    
+    printf("Enter the data for each node:\n");
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &data);
+        insert(&head, data);
+    }
+    
+    printf("Original Linked List: ");
+    printList(head);
+    
+    // Reverse the linked list
+    reverse(&head);
+    
+    printf("Reversed Linked List: ");
+    printList(head);
+    
+    return 0;
+}
+
+
+2.B) Read numbers from the user until 10 is entered and 
+then calculate the average of all the numbers entered.
+------------------------------------------------------
+
+#include<stdio.h>
+int main(){
+	int i,num,sum,count=0;
+	float average;
+	printf("Enter numbers (Enter 10 to stop) : \n");
+	while(i){
+		scanf("%d",&num);
+		if(num==10){
+			break;
+		}		
+		sum=sum+num;
+		count++;	
+	}
+	if(count!=0){
+		average=(float)sum/num;
+		printf("Average of entered numbers : %.2f\n",average);
+	}
+	else{
+		printf("No numbers entered \n");
+	}
+	return 0;
+}
+
+
+3.A) Program to take an expression string x. Examine whether 
+the pairs and the orders of {,}, (,), [,] are correct in exp.
+------------------------------------------------------------
+
+#include <stdio.h>
+#include <stdbool.h>
+#include <stdlib.h>
+#include <string.h>
+
+// Structure for stack node
+struct StackNode {
+    char data;
+    struct StackNode* next;
+};
+
+// Function to create a new stack node
+struct StackNode* newNode(char data) {
+    struct StackNode* stackNode = (struct StackNode*)malloc(sizeof(struct StackNode));
+    stackNode->data = data;
+    stackNode->next = NULL;
+    return stackNode;
+}
+
+// Function to check if stack is empty
+bool isEmpty(struct StackNode* root) {
+    return !root;
+}
+
+// Function to push an element onto the stack
+void push(struct StackNode** root, char data) {
+    struct StackNode* stackNode = newNode(data);
+    stackNode->next = *root;
+    *root = stackNode;
+}
+
+// Function to pop an element from the stack
+char pop(struct StackNode** root) {
+    if (isEmpty(*root))
+        return '\0';
+    struct StackNode* temp = *root;
+    *root = (*root)->next;
+    char popped = temp->data;
+    free(temp);
+    return popped;
+}
+
+// Function to examine the expression for correct pairs and order
+bool isBalanced(char* exp) {
+    struct StackNode* stack = NULL;
+    for (int i = 0; i < strlen(exp); i++) {
+        if (exp[i] == '{' || exp[i] == '(' || exp[i] == '[')
+            push(&stack, exp[i]);
+        else if (exp[i] == '}' || exp[i] == ')' || exp[i] == ']') {
+            if (isEmpty(stack))
+                return false;
+            char popped = pop(&stack);
+            if ((popped == '{' && exp[i] != '}') ||
+                (popped == '(' && exp[i] != ')') ||
+                (popped == '[' && exp[i] != ']'))
+                return false;
+        }
+    }
+    return isEmpty(stack);
+}
+
+int main() {
+    char exp[100];
+    printf("Enter the expression: ");
+    fgets(exp, sizeof(exp), stdin);
+
+    // Removing the newline character
+    exp[strcspn(exp, "\n")] = '\0';
+
+    if (isBalanced(exp))
+        printf("Expression is balanced.\n");
+    else
+        printf("Expression is not balanced.\n");
+
+    return 0;
+}
+
+
+3.B) To accept the number entered by user and print how many times each number is repeated.
+------------------------------------------------------------------------------------------
+
+#include <stdio.h>
+int main() {
+    int numbers[100]; // Assuming a maximum of 100 numbers
+    int frequency[100] = {0}; // Initialize frequency array with zeros
+    int n, i, j;
+
+    printf("Enter the total number of elements: ");
+    scanf("%d", &n);
+
+    printf("Enter %d elements:\n", n);
+    for (i = 0; i < n; i++) {
+        scanf("%d", &numbers[i]);
+    }
+
+    // Count frequency of each element
+    for (i = 0; i < n; i++) {
+        int count = 1; // Count the occurrence of numbers[i]
+        if (frequency[i] == -1) {
+            continue; // If already counted, skip
+        }
+        for (j = i + 1; j < n; j++) {
+            if (numbers[i] == numbers[j]) {
+                count++;
+                frequency[j] = -1; // Mark the duplicate number as counted
+            }
+        }
+        frequency[i] = count;
+    }
+
+    // Print the frequency of each element
+    printf("Number\tFrequency\n");
+    for (i = 0; i < n; i++) {
+        if (frequency[i] != -1) {
+            printf("%d\t%d\n", numbers[i], frequency[i]);
+        }
+    }
+
+    return 0;
+}
+
+
+4.A) Selection sort
+-------------------
+
+#include <stdio.h>
+// Function to perform selection sort
+void selectionSort(int arr[], int n) {
+    int i, j, min_idx;
+    // One by one move boundary of unsorted subarray
+    for (i = 0; i < n - 1; i++) {
+        // Find the minimum element in unsorted array
+        min_idx = i;
+        for (j = i + 1; j < n; j++) {
+            if (arr[j] < arr[min_idx])
+                min_idx = j;
+        }
+        // Swap the found minimum element with the first element
+        int temp = arr[min_idx];
+        arr[min_idx] = arr[i];
+        arr[i] = temp;
+    }
+}
+
+// Function to print an array
+void printArray(int arr[], int size) {
+    int i;
+    for (i = 0; i < size; i++)
+        printf("%d ", arr[i]);
+    printf("\n");
+}
+
+int main() {
+    int arr[] = {64, 25, 12, 22, 11};
+    int n = sizeof(arr) / sizeof(arr[0]);
+    printf("Original array: \n");
+    printArray(arr, n);
+    selectionSort(arr, n);
+    printf("Sorted array: \n");
+    printArray(arr, n);
+    return 0;
+}
+
+
+
+4.B) Calculate the perimeter and area of rectangle.
+---------------------------------------------------
+
+#include<stdio.h>
+int main(){
+	float length,breadth,perimeter,area;
+	printf("Enter length : ");
+	scanf("%f",&length);
+	printf("Enter breadth : ");
+	scanf("%f",&breadth);
+	perimeter=2*(length+breadth);
+	area=length*breadth;
+	printf("Perimeter is : %.2f\n",perimeter);
+	printf("Area is : %.2f",area);
+	return 0;
+}
+
+
+5.a) Quick sort
+---------------
+
+#include <stdio.h>
+void swap(int* a, int* b) {
+ int temp = *a;
+ *a = *b;
+ *b = temp;
+}
+int partition(int arr[], int low, int high) {
+ int pivot = arr[high];
+ int i = low - 1;
+ int j;
+ for (j = low; j <= high - 1; j++) {
+ if (arr[j] < pivot) {
+ i++;
+ swap(&arr[i], &arr[j]);
+ }
+ }
+ swap(&arr[i + 1], &arr[high]);
+ return i + 1;
+}
+void quickSort(int arr[], int low, int high) {
+ if (low < high) {
+ int pivotIndex = partition(arr, low, high);
+ quickSort(arr, low, pivotIndex - 1);
+ quickSort(arr, pivotIndex + 1, high);
+ }
+}
+void printArray(int arr[], int size) {
+ int i;
+ for (i = 0; i < size; i++) {
+ printf("%d ", arr[i]);
+ }
+ printf("\n");
+}
+int main() {
+ int size,i;
+ printf("Enter the size of the array: ");
+ scanf("%d", &size);
+ int arr[size];
+ printf("Enter the elements of the array:\n");
+ for (i = 0; i < size; i++) {
+ scanf("%d", &arr[i]);
+ }
+ printf("Original array: ");
+ printArray(arr, size);
+ quickSort(arr, 0, size - 1);
+ printf("Sorted array: ");
+ printArray(arr, size);
+ return 0;
+}
+
+
+5.B) Largest of three numbers
+-----------------------------
+
+#include<stdio.h>
+int main(){
+	int a,b,c,largest;
+	printf("Enter numbers : \n");
+	scanf("%d %d %d",&a,&b,&c);
+	if(a>=b && a>=c){
+		largest=a;
+	}
+	else if(b>=a && b>=c){
+		largest=b;
+	}
+	else{
+		largest=c;
+	}
+	printf("Largest number is : %d",largest);
+	return 0;
+}
+
+6.A) Merge sort
+---------------
+
+#include <stdio.h>
+void merge(int arr[], int left, int mid, int right) {
+ int n1 = mid - left + 1;
+ int n2 = right - mid;
+ int leftArray[n1], rightArray[n2];
+ for (int i = 0; i < n1; i++) {
+ leftArray[i] = arr[left + i];
+ }
+ for (int j = 0; j < n2; j++) {
+ rightArray[j] = arr[mid + 1 + j];
+ }
+ int i = 0, j = 0, k = left;
+ while (i < n1 && j < n2) {
+ if (leftArray[i] <= rightArray[j]) {
+ arr[k] = leftArray[i];
+ i++;
+ } else {
+ arr[k] = rightArray[j];
+ j++;
+ }
+ k++;
+ }
+ while (i < n1) {
+ arr[k] = leftArray[i];
+ i++;
+ k++;
+ }
+ while (j < n2) {
+ arr[k] = rightArray[j];
+ j++;
+ k++;
+ }
+}
+void mergeSort(int arr[], int left, int right) {
+ if (left < right) {
+ int mid = left + (right - left) / 2;
+ mergeSort(arr, left, mid);
+ mergeSort(arr, mid + 1, right);
+ merge(arr, left, mid, right);
+ }
+}
+void printArray(int arr[], int size) {
+ for (int i = 0; i < size; i++) {
+ printf("%d ", arr[i]);
+ }
+ printf("\n");
+}
+int main() {
+ int size;
+ printf("Enter the size of the array: ");
+ scanf("%d", &size);
+ int arr[size];
+ printf("Enter the elements of the array:\n");
+ for (int i = 0; i < size; i++) {
+ scanf("%d", &arr[i]);
+ }
+ printf("Original array: ");
+ printArray(arr, size);
+ mergeSort(arr, 0, size - 1);
+ printf("Sorted array: ");
+ printArray(arr, size);
+ return 0;
+}
+
+
+6.B) Prime or not
+-----------------
+
+#include<stdio.h>
+main(){
+	int n,i,count=0;
+	printf("Enter n : ");
+	scanf("%d",&n);
+	for(i=1;i<=n;i++){
+		if(n%i==0){
+			count++;
+		}
+	}
+	if(count>2){
+		printf("It is not a prime number");
+	}
+	else{
+		printf("It is a prime number");
+	}
+}
+
+7.A) Height of a binary tree
+----------------------------
+
+#include <stdio.h>
+#include <stdlib.h>
+
+// Structure for a node of the binary tree
+struct Node {
+    int data;
+    struct Node* left;
+    struct Node* right;
+};
+
+// Function to create a new node
+struct Node* createNode(int data) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    if (!newNode) {
+        printf("Memory allocation error\n");
+        exit(1);
+    }
+    newNode->data = data;
+    newNode->left = newNode->right = NULL;
+    return newNode;
+}
+
+// Function to find the height of a binary tree
+int height(struct Node* root) {
+    if (root == NULL)
+        return -1; // Height of an empty tree is -1
+    int leftHeight = height(root->left);
+    int rightHeight = height(root->right);
+    // Return the maximum of leftHeight and rightHeight plus 1
+    return (leftHeight > rightHeight ? leftHeight : rightHeight) + 1;
+}
+
+int main() {
+    // Create the binary tree
+    struct Node* root = createNode(1);
+    root->left = createNode(2);
+    root->right = createNode(3);
+    root->left->left = createNode(4);
+    root->left->right = createNode(5);
+
+    printf("Height of the binary tree is: %d\n", height(root));
+
+    return 0;
+}
+
+
+7.B) Transpose of a matrix
+--------------------------
+
+#include <stdio.h>
+
+#define ROWS 3
+#define COLS 3
+
+// Function to transpose a matrix
+void transpose(int mat[ROWS][COLS]) {
+    int temp;
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = i + 1; j < COLS; j++) {
+            // Swap element at position (i, j) with element at position (j, i)
+            temp = mat[i][j];
+            mat[i][j] = mat[j][i];
+            mat[j][i] = temp;
+        }
+    }
+}
+
+// Function to print a matrix
+void printMatrix(int mat[ROWS][COLS]) {
+    printf("Transposed Matrix:\n");
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COLS; j++) {
+            printf("%d ", mat[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+int main() {
+    int matrix[ROWS][COLS];
+
+    // Input matrix elements
+    printf("Enter elements of %d x %d matrix:\n", ROWS, COLS);
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COLS; j++) {
+            scanf("%d", &matrix[i][j]);
+        }
+    }
+
+    // Transpose the matrix
+    transpose(matrix);
+
+    // Print the transposed matrix
+    printMatrix(matrix);
+
+    return 0;
+}
+
+8.A) Binary search
+------------------
+
+#include <stdio.h>
+#include <stdlib.h>
+
+// Structure for a node of the binary search tree
+struct Node {
+    int data;
+    struct Node* left;
+    struct Node* right;
+};
+
+// Function to create a new node
+struct Node* createNode(int data) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = data;
+    newNode->left = newNode->right = NULL;
+    return newNode;
+}
+
+// Function to insert a new node into the binary search tree
+struct Node* insert(struct Node* root, int data) {
+    if (root == NULL) {
+        return createNode(data);
+    }
+    if (data < root->data) {
+        root->left = insert(root->left, data);
+    } else if (data > root->data) {
+        root->right = insert(root->right, data);
+    }
+    return root;
+}
+
+// Function to search for a node with given data in the binary search tree
+struct Node* search(struct Node* root, int data) {
+    if (root == NULL || root->data == data) {
+        return root;
+    }
+    if (root->data < data) {
+        return search(root->right, data);
+    }
+    return search(root->left, data);
+}
+
+// Function to print the inorder traversal of the binary search tree
+void inorder(struct Node* root) {
+    if (root != NULL) {
+        inorder(root->left);
+        printf("%d ", root->data);
+        inorder(root->right);
+    }
+}
+
+int main() {
+    struct Node* root = NULL;
+    int data, search_data;
+
+    // Insert elements into the binary search tree
+    root = insert(root, 50);
+    insert(root, 30);
+    insert(root, 20);
+    insert(root, 40);
+    insert(root, 70);
+    insert(root, 60);
+    insert(root, 80);
+
+    // Print the inorder traversal of the binary search tree
+    printf("Inorder traversal of the binary search tree: ");
+    inorder(root);
+    printf("\n");
+
+    // Search for a node with given data
+    printf("Enter the node data to search: ");
+    scanf("%d", &search_data);
+    struct Node* found = search(root, search_data);
+    if (found != NULL) {
+        printf("Node with data %d found in the binary search tree.\n", search_data);
+    } else {
+        printf("Node with data %d not found in the binary search tree.\n", search_data);
+    }
+
+    return 0;
+}
+
+
+8.B) Comparing two strings
+--------------------------
+
+#include <stdio.h>
+#include <string.h>
+
+main() {
+    char str1[] = "apple";
+    char str2[] = "banana";
+
+    int result = strcmp(str1, str2);
+
+    if (result < 0)
+        printf("%s is less than %s\n", str1, str2);
+    else if (result > 0)
+        printf("%s greater than %s\n", str1, str2);
+    else
+        printf("%s strings are equal %s\n", str1, str2);
+
+}
+
+
+9.A) Binary tree and it's preorder traversal
+--------------------------------------------
+
+#include <stdio.h>
+#include <stdlib.h>
+
+// Structure for a node of the binary tree
+struct Node {
+    int data;
+    struct Node* left;
+    struct Node* right;
+};
+
+// Function to create a new node
+struct Node* createNode(int data) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = data;
+    newNode->left = newNode->right = NULL;
+    return newNode;
+}
+
+// Function to perform preorder traversal of the binary tree
+void preorderTraversal(struct Node* root) {
+    if (root != NULL) {
+        printf("%d ", root->data);
+        preorderTraversal(root->left);
+        preorderTraversal(root->right);
+    }
+}
+
+int main() {
+    // Create the binary tree
+    struct Node* root = createNode(1);
+    root->left = createNode(2);
+    root->right = createNode(3);
+    root->left->left = createNode(4);
+    root->left->right = createNode(5);
+
+    printf("Preorder Traversal of the binary tree: ");
+    preorderTraversal(root);
+
+    return 0;
+}
+
+
+9.B) Length of the string
+-------------------------
+
+#include <stdio.h>
+main() {
+    char str[] = "Hello World";
+    int length = 0;
+
+    // Loop until null terminator is encountered
+    while (str[length] != '\0') {
+        length++;
+    }
+    printf("Length of the string '%s' is: %d\n", str, length);
+}
+
+
+10.A) Queue
+-----------
+
+#include <stdio.h>
+#include <stdlib.h>
+
+// Structure for a node of the queue
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+// Structure for the queue
+struct Queue {
+    struct Node *front, *rear;
+};
+
+// Function to create a new node
+struct Node* createNode(int data) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    if (!newNode) {
+        printf("Memory allocation error\n");
+        exit(1);
+    }
+    newNode->data = data;
+    newNode->next = NULL;
+    return newNode;
+}
+
+// Function to create an empty queue
+struct Queue* createQueue() {
+    struct Queue* queue = (struct Queue*)malloc(sizeof(struct Queue));
+    if (!queue) {
+        printf("Memory allocation error\n");
+        exit(1);
+    }
+    queue->front = queue->rear = NULL;
+    return queue;
+}
+
+// Function to enqueue an element to the rear of the queue
+void enqueue(struct Queue* queue, int data) {
+    struct Node* newNode = createNode(data);
+    if (queue->rear == NULL) {
+        queue->front = queue->rear = newNode;
+        return;
+    }
+    queue->rear->next = newNode;
+    queue->rear = newNode;
+}
+
+// Function to dequeue an element from the front of the queue
+int dequeue(struct Queue* queue) {
+    if (queue->front == NULL) {
+        printf("Queue is empty\n");
+        exit(1);
+    }
+    int data = queue->front->data;
+    struct Node* temp = queue->front;
+    queue->front = queue->front->next;
+    if (queue->front == NULL)
+        queue->rear = NULL;
+    free(temp);
+    return data;
+}
+
+// Function to reverse the first K elements of the queue
+void reverseK(struct Queue* queue, int k) {
+    if (k <= 0)
+        return;
+    int* temp = (int*)malloc(sizeof(int) * k);
+    for (int i = 0; i < k; i++) {
+        temp[i] = dequeue(queue);
+    }
+    for (int i = k - 1; i >= 0; i--) {
+        enqueue(queue, temp[i]);
+    }
+    free(temp);
+}
+
+// Function to print the elements of the queue
+void printQueue(struct Queue* queue) {
+    struct Node* temp = queue->front;
+    while (temp != NULL) {
+        printf("%d ", temp->data);
+        temp = temp->next;
+    }
+    printf("\n");
+}
+
+int main() {
+    int k, n, element;
+    printf("Enter the value of K: ");
+    scanf("%d", &k);
+    printf("Enter the number of elements in the queue: ");
+    scanf("%d", &n);
+    
+    struct Queue* queue = createQueue();
+    printf("Enter the elements of the queue:\n");
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &element);
+        enqueue(queue, element);
+    }
+
+    printf("Original queue: ");
+    printQueue(queue);
+    
+    reverseK(queue, k);
+    
+    printf("Queue after reversing the first %d elements: ", k);
+    printQueue(queue);
+
+    return 0;
+}
+
+
+10.B) Comparing using pointers
+------------------------------
+
+#include <stdio.h>
+main() {
+    int num1, num2;
+    int *ptr1, *ptr2;
+
+    printf("Enter the first number: ");
+    scanf("%d", &num1);
+    printf("Enter the second number: ");
+    scanf("%d", &num2);
+
+    ptr1 = &num1;
+    ptr2 = &num2;
+
+    if (*ptr1 > *ptr2) {
+        printf("%d is greater than %d\n", *ptr1, *ptr2);
+    } else if (*ptr1 < *ptr2) {
+        printf("%d is less than %d\n", *ptr1, *ptr2);
+    } else {
+        printf("%d is equal to %d\n", *ptr1, *ptr2);
+    }
+}
+
+
+11.A) Insertion sort
+--------------------
+
+#include <stdio.h>
+void insertionSort(int arr[], int n) {
+    int i, key, j;
+    for (i = 1; i < n; i++) {
+        key = arr[i];
+        j = i - 1;
+
+        /* Move elements of arr[0..i-1], that are greater than key, to one position ahead
+           of their current position */
+        while (j >= 0 && arr[j] > key) {
+            arr[j + 1] = arr[j];
+            j = j - 1;
+        }
+        arr[j + 1] = key;
+    }
+}
+
+void printArray(int arr[], int n) {
+    for (int i = 0; i < n; i++)
+        printf("%d ", arr[i]);
+    printf("\n");
+}
+int main() {
+    int arr[] = {12, 11, 13, 5, 6};
+    int n = sizeof(arr) / sizeof(arr[0]);
+
+    printf("Original array: \n");
+    printArray(arr, n);
+
+    insertionSort(arr, n);
+
+    printf("Sorted array: \n");
+    printArray(arr, n);
+    return 0;
+}
+
+
+11.B) Matrix multiplication
+---------------------------
+
+#include <stdio.h>
+#define SIZE 3
+int main()
+{
+ int A[SIZE][SIZE];
+ int B[SIZE][SIZE];
+ int C[SIZE][SIZE];
+ int row, col, i, sum;
+ printf("Enter elements in matrix A of size %dx%d: \n", SIZE, SIZE);
+ for(row=0; row<SIZE; row++)
+ {
+ for(col=0; col<SIZE; col++)
+ {
+ scanf("%d", &A[row][col]);
+ }
+ }
+ printf("\nEnter elements in matrix B of size %dx%d: \n", SIZE, SIZE);
+ for(row=0; row<SIZE; row++)
+ {
+ for(col=0; col<SIZE; col++)
+ {
+ scanf("%d", &B[row][col]);
+ }
+ }
+ for(row=0; row<SIZE; row++)
+ {
+ for(col=0; col<SIZE; col++)
+ {
+ sum = 0;
+ for(i=0; i<SIZE; i++)
+ {
+ sum += A[row][i] * B[i][col];
+ }
+ C[row][col] = sum;
+ }
+ }
+ printf("\nProduct of matrix A * B = \n");
+ for(row=0; row<SIZE; row++)
+ {
+ for(col=0; col<SIZE; col++)
+ {
+ printf("%d ", C[row][col]);
+ }
+ printf("\n");
+ }
+ return 0;
+}
+
+
+12.A) Doublr linkedlist
+-----------------------
+
+#include <stdio.h>
+#include <stdlib.h>
+
+// Structure for a node of the doubly linked list
+struct Node {
+    int data;
+    struct Node* prev;
+    struct Node* next;
+};
+
+// Function to create a new node
+struct Node* createNode(int data) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    if (!newNode) {
+        printf("Memory allocation error\n");
+        exit(1);
+    }
+    newNode->data = data;
+    newNode->prev = newNode->next = NULL;
+    return newNode;
+}
+
+// Function to insert a new node at the end of the doubly linked list
+void insertAtEnd(struct Node** head, int data) {
+    struct Node* newNode = createNode(data);
+    if (*head == NULL) {
+        *head = newNode;
+        return;
+    }
+    struct Node* temp = *head;
+    while (temp->next != NULL) {
+        temp = temp->next;
+    }
+    temp->next = newNode;
+    newNode->prev = temp;
+}
+
+// Function to print the doubly linked list in forward order
+void printForward(struct Node* head) {
+    printf("Forward List: ");
+    while (head != NULL) {
+        printf("%d ", head->data);
+        head = head->next;
+    }
+    printf("\n");
+}
+
+// Function to reverse the doubly linked list
+void reverse(struct Node** head) {
+    struct Node *current = *head, *temp = NULL;
+    while (current != NULL) {
+        // Swap prev and next pointers of the current node
+        temp = current->prev;
+        current->prev = current->next;
+        current->next = temp;
+        // Move to the next node
+        current = current->prev;
+    }
+    // Update head pointer
+    if (temp != NULL) {
+        *head = temp->prev;
+    }
+}
+
+// Function to print the doubly linked list in reverse order
+void printReverse(struct Node* head) {
+    printf("Reverse List: ");
+    while (head != NULL && head->next != NULL) {
+        head = head->next;
+    }
+    while (head != NULL) {
+        printf("%d ", head->data);
+        head = head->prev;
+    }
+    printf("\n");
+}
+
+int main() {
+    struct Node* head = NULL;
+    // Insert elements into the doubly linked list
+    insertAtEnd(&head, 1);
+    insertAtEnd(&head, 2);
+    insertAtEnd(&head, 3);
+    insertAtEnd(&head, 4);
+    insertAtEnd(&head, 5);
+
+    // Print the original doubly linked list in forward order
+    printForward(head);
+
+    // Reverse the doubly linked list
+    reverse(&head);
+
+    // Print the reversed doubly linked list in reverse order
+    printReverse(head);
+
+    return 0;
+}
+
+12.B) Mean of numbers using pointers
+------------------------------------
+
+#include <stdio.h>
+
+// Function to find the mean of n numbers using pointer
+float findMean(int *arr, int n) {
+    int sum = 0;
+    for (int i = 0; i < n; i++) {
+        sum += *(arr + i); // Dereferencing the pointer to access array elements
+    }
+    return (float)sum / n;
+}
+
+int main() {
+    int n;
+    printf("Enter the number of elements: ");
+    scanf("%d", &n);
+    int arr[n];
+
+    printf("Enter the elements:\n");
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &arr[i]);
+    }
+
+    // Calculate mean using pointer
+    float mean = findMean(arr, n);
+    printf("Mean of the numbers: %.2f\n", mean);
+
+    return 0;
+}
+
+
+
+
+
+
+
+
